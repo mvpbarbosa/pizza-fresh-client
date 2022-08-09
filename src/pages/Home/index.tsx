@@ -7,6 +7,7 @@ import { navigationItems } from "data/navigation";
 import ProductItemList from "components/ProductItemList";
 import ProductItem from "components/ProductItem";
 import OrderDetails from "components/OrderDetails";
+import Overlay from "components/Overlay";
 
 const Home = () => {
   const dateDescription = DateTime.now().toLocaleString({
@@ -37,7 +38,7 @@ const Home = () => {
           </S.HomeProductTitle>
           <S.HomeProductList>
             <ProductItemList>
-              <ProductItem/>
+              <ProductItem />
             </ProductItemList>
           </S.HomeProductList>
         </div>
@@ -45,6 +46,9 @@ const Home = () => {
       <aside>
         <OrderDetails></OrderDetails>
       </aside>
+      <Overlay>
+        
+      </Overlay>
     </S.Home>
   );
 };
