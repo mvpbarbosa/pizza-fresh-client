@@ -9,15 +9,24 @@ import ProductItem from "components/ProductItem";
 import OrderDetails from "components/OrderDetails";
 import Overlay from "components/Overlay";
 import CheckoutSection from "components/CheckoutSection";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const dateDescription = DateTime.now().toLocaleString({
     ...DateTime.DATE_SHORT,
     weekday: "long",
   });
+  const navigate = useNavigate();
+  const handleNavigation = (path: RoutePath) => navigate(path);
+
   return (
     <S.Home>
-      <Menu active={RoutePath.HOME} navItems={navigationItems} />
+      <Menu
+        active={RoutePath.HOME}
+        navItems={navigationItems}
+        onNavigate={handleNavigation}
+        onLogout={() => navigate(RoutePath.LOGIN)}
+      />
       <S.HomeContent>
         <header>
           <S.HomeHeaderDetails>
@@ -45,11 +54,11 @@ const Home = () => {
         </div>
       </S.HomeContent>
       <aside>
-        <OrderDetails></OrderDetails>
+        <OrderDetails />
       </aside>
-      <Overlay>
-        <CheckoutSection />
-      </Overlay>
+      {/* <Overlay>
+                <CheckoutSection />
+            </Overlay> */}
     </S.Home>
   );
 };
