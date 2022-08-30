@@ -1,20 +1,43 @@
+import { HTMLAttributes, useState } from "react";
 import CheckboxIcon from "components/CheckboxIcon";
 import OrderConfirmation from "components/OrderConfirmation";
+
 import { ReactComponent as Card } from "assets/icons/credit-card.svg";
 import { ReactComponent as Cash } from "assets/icons/wallet.svg";
-import * as S from "./style";
 
-const CheckoutSection = () => {
+import * as S from "./style";
+import { OrderItemType } from "types/OrderItemType";
+
+type CheckoutSectionType = HTMLAttributes<HTMLDivElement>;
+
+type CheckoutSectionProps = {
+  orders: OrderItemType[];
+  onOrdersChange: (orders: OrderItemType[]) => void;
+  onCloseSection: () => void;
+} & CheckoutSectionType;
+
+const CheckoutSection = ({
+  orders,
+  onOrdersChange,
+  onCloseSection,
+}: CheckoutSectionProps) => {
+  const [closing, setClosing] = useState<boolean>(false);
+
+  const handleCloseSection = () => {
+    setClosing(true);
+    setTimeout(onCloseSection, 800);
+  };
+
   return (
-    <S.CheckoutSection closing={false}>
+    <S.CheckoutSection closing={closing}>
       <S.CheckoutSectionConfirmation>
-        <S.BackIcon />
-        <OrderConfirmation />
+        <S.BackIcon onClick={handleCloseSection} />
+        <OrderConfirmation orders={orders} onOrdersChange={onOrdersChange} />
       </S.CheckoutSectionConfirmation>
       <S.CheckoutSectionPayment>
         <S.CheckoutSectionPaymentHead>Pagamento</S.CheckoutSectionPaymentHead>
         <S.CheckoutSectionPaymentSub>
-          2 Métodos de pagamento disponíveis
+          2 métodos de pagamento disponíveis
         </S.CheckoutSectionPaymentSub>
         <S.CheckoutSectionPaymentForm>
           <S.CheckoutSectionPaymentFormTitle>
@@ -22,8 +45,8 @@ const CheckoutSection = () => {
           </S.CheckoutSectionPaymentFormTitle>
           <S.PaymentForm>
             <S.PaymentFormCheckbox>
-              <CheckboxIcon active={true} value="Cartão" icon={<Card />}/>
-              <CheckboxIcon active={false} value="Dinheiro" icon={<Cash />}/>
+              <CheckboxIcon active={false} value="Cartão" icon={<Card />} />
+              <CheckboxIcon active={false} value="Dinheiro" icon={<Cash />} />
             </S.PaymentFormCheckbox>
             <>
               <S.PaymentFormGroup>
@@ -32,7 +55,7 @@ const CheckoutSection = () => {
                   type="text"
                   name="titular"
                   id="titular"
-                  placeholder="Marcos Barbosa"
+                  placeholder="Marcus Silva"
                 />
               </S.PaymentFormGroup>
 
@@ -42,7 +65,7 @@ const CheckoutSection = () => {
                   type="text"
                   name="card"
                   id="card"
-                  placeholder="4202 8922 0831 1467"
+                  placeholder="5369 7644 5393 3165"
                 />
               </S.PaymentFormGroup>
 
@@ -53,12 +76,12 @@ const CheckoutSection = () => {
                     type="text"
                     name="card"
                     id="validity"
-                    placeholder="08/24"
+                    placeholder="09/2023"
                   />
                 </S.PaymentFormHalfItem>
                 <S.PaymentFormHalfItem>
                   <label htmlFor="cvv">CVV</label>
-                  <input type="text" name="cvv" id="cvv" placeholder="171" />
+                  <input type="text" name="cvv" id="cvv" placeholder="218" />
                 </S.PaymentFormHalfItem>
               </S.PaymentFormHalf>
             </>
