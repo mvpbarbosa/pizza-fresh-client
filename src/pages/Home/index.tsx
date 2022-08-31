@@ -18,13 +18,13 @@ import { useQuery } from "@tanstack/react-query";
 import { QueryKey } from "types/QueryKey";
 import { ProductService } from "services/ProductService";
 import { TableService } from "services/TableService";
+import { Auth } from "helpers/Auth";
 
 const Home = () => {
   const dateDescription = DateTime.now().toLocaleString({
     ...DateTime.DATE_SHORT,
     weekday: "long",
   });
-
   const navigate = useNavigate();
 
   const { data: productsData } = useQuery(
@@ -32,7 +32,6 @@ const Home = () => {
     ProductService.getLista
   );
 
-  // Após a atualização da biblioteca react query (sendo utilizada como @tanstack/react-query), o método useQuery agora só aceita array como primeiro parâmetro ao invés de string como mostrado no vídeo
   const { data: tablesData } = useQuery(
     [QueryKey.TABLES],
     TableService.getLista
@@ -41,7 +40,6 @@ const Home = () => {
   const tables = tablesData || [];
 
   const [products, setProducts] = useState<ProductResponse[]>([]);
-
   const [activeOrderType, setActiverOrderType] = useState(
     OrderType.COMER_NO_LOCAL
   );
@@ -49,7 +47,6 @@ const Home = () => {
   const [orders, setOrders] = useState<OrderItemType[]>([]);
   const [selectedTable, setSelectedTable] = useState<number | undefined>();
   const [proceedToPayment, setProceedToPayment] = useState<boolean>(false);
-
   const handleNavigation = (path: RoutePath) => navigate(path);
 
   const handleSelection = (product: ProductResponse) => {
@@ -64,7 +61,7 @@ const Home = () => {
   };
 
   const handleRemoveOrderItem = (id: string) => {
-    const filtered = orders.filter((i) => i.product.id != id);
+    const filtered = orders.filter((i) => i.product.id !== id);
     setOrders(filtered);
   };
 
@@ -78,7 +75,7 @@ const Home = () => {
         active={RoutePath.HOME}
         navItems={navigationItems}
         onNavigate={handleNavigation}
-        onLogout={() => navigate(RoutePath.LOGIN)}
+        onLogout={Auth.logout}
       />
       <S.HomeContent>
         <header>
